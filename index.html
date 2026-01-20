@@ -136,11 +136,17 @@
             }
         }
 
-        /* On mobile, allow both horizontal and vertical scrolling */
+        /* On mobile, enable native horizontal scrolling */
         @media (max-width: 767px) {
+            #mod-05 {
+                overflow-x: auto !important; /* Override overflow-hidden */
+                overflow-y: visible !important;
+            }
+
             .aisle-wrapper {
                 touch-action: pan-x pan-y;
                 -webkit-overflow-scrolling: touch;
+                overflow-x: auto;
             }
         }
 
@@ -1352,14 +1358,14 @@
 
 
             // --- MODULE 04: MATCH GRAPH (PINNED + MOTIONPATH) ---
-            // Desktop: Full pinned animation. Mobile: Simple fade-in without pinning
+            // Desktop: Pinned animation. Mobile: Scroll-based animation without pinning
             const isMobileMod04 = window.matchMedia("(max-width: 767px)").matches;
 
             const tlGraph = gsap.timeline({
                 scrollTrigger: {
                     trigger: "#mod-04",
-                    start: isMobileMod04 ? "top 80%" : "top top",
-                    end: isMobileMod04 ? "top 50%" : "+=150%",
+                    start: isMobileMod04 ? "top center" : "top top",
+                    end: isMobileMod04 ? "bottom top" : "+=150%",
                     scrub: 1,
                     pin: !isMobileMod04, // Only pin on desktop
                     invalidateOnRefresh: true
