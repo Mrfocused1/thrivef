@@ -126,8 +126,22 @@
         }
 
         .aisle-wrapper {
-            touch-action: none; /* Disable direct touch manipulation on wrapper */
             will-change: transform; /* GPU acceleration hint */
+        }
+
+        /* Only disable touch on desktop where GSAP ScrollTrigger handles horizontal scroll */
+        @media (min-width: 768px) {
+            .aisle-wrapper {
+                touch-action: none;
+            }
+        }
+
+        /* On mobile, allow both horizontal and vertical scrolling */
+        @media (max-width: 767px) {
+            .aisle-wrapper {
+                touch-action: pan-x pan-y;
+                -webkit-overflow-scrolling: touch;
+            }
         }
 
         /* Animated Hero Sections */
@@ -230,6 +244,31 @@
             will-change: transform;
         }
 
+        /* Hero Sections - Mobile specific fixes */
+        @media (max-width: 767px) {
+            .hero-section {
+                height: 100dvh; /* Use dynamic viewport height for iOS */
+                height: -webkit-fill-available; /* Fallback for older iOS */
+                touch-action: manipulation; /* Allow taps but prevent double-tap zoom */
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .hero-section .outer,
+            .hero-section .inner {
+                overflow: visible; /* Remove overflow hidden on mobile */
+                height: 100dvh;
+                height: -webkit-fill-available;
+            }
+
+            /* During hero mode on mobile, lock scroll position */
+            body.hero-mode {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                touch-action: manipulation;
+            }
+        }
+
         /* During hero intro, hide main content below */
         /* On mobile: allow scrolling. On desktop: prevent scrolling during intro */
         @media (min-width: 768px) {
@@ -243,19 +282,38 @@
             pointer-events: none;
         }
 
-        /* When hero is complete, transition to scrollable layout */
+        /* When hero is complete, ensure fully scrollable layout */
         body.hero-complete .hero-section {
-            position: relative !important;
-            visibility: visible !important;
+            display: none !important; /* Ensure hero sections are gone */
         }
 
         body.hero-complete {
-            overflow: auto;
+            overflow: auto !important;
+            overflow-x: hidden !important;
+            position: static !important;
+            height: auto !important;
+            width: 100% !important;
+            top: unset !important;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        html.hero-complete,
+        body.hero-complete {
+            overscroll-behavior: auto;
+            touch-action: auto;
         }
 
         body.hero-complete #main-content {
             opacity: 1 !important;
             pointer-events: auto !important;
+            position: static;
+        }
+
+        /* Remove any scroll-blocking from smooth-wrapper after hero */
+        body.hero-complete #smooth-wrapper,
+        body.hero-complete #smooth-content {
+            height: auto;
+            overflow: visible;
         }
 
         /* Logo i dots color adaptation - white on dark, black on light */
@@ -928,13 +986,19 @@
             // Register GSAP Plugins
             gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-            // Enable ScrollTrigger normalizeScroll for all devices
-            // Ensures consistent scroll behavior across touch, wheel, and pointer inputs
-            ScrollTrigger.normalizeScroll({
-                allowNestedScroll: true,
-                lockAxis: false,
-                type: "touch,wheel,pointer" // Normalize across all input types
-            });
+            // Only enable normalizeScroll on desktop where it helps with pinned sections
+            // On mobile, normalizeScroll blocks native scroll and causes "stuck" issues
+            const isMobileDevice = window.matchMedia("(max-width: 767px)").matches;
+            if (!isMobileDevice) {
+                ScrollTrigger.normalizeScroll({
+                    allowNestedScroll: true,
+                    lockAxis: false,
+                    type: "touch,wheel,pointer"
+                });
+            }
+
+            // Prevent ScrollTrigger from refreshing on mobile resize (address bar show/hide)
+            ScrollTrigger.config({ ignoreMobileResize: true });
 
             // Initialize Icons
             lucide.createIcons();
@@ -1135,6 +1199,18 @@
                         // Transition to normal mode
                         document.body.classList.remove('hero-mode');
                         document.body.classList.add('hero-complete');
+                        document.documentElement.classList.add('hero-complete');
+
+                        // CRITICAL: Reset all styles that may block scroll
+                        document.body.style.overflow = '';
+                        document.body.style.position = '';
+                        document.body.style.top = '';
+                        document.body.style.width = '';
+                        document.body.style.height = '';
+
+                        // Also reset html element
+                        document.documentElement.style.overflow = '';
+                        document.documentElement.style.position = '';
 
                         // Show static hero section
                         const staticHero = document.getElementById('static-hero');
@@ -1161,6 +1237,12 @@
                             lucide.createIcons();
                             // Update logo color for static hero
                             updateLogoColor();
+
+                            // Final safety check - ensure scroll is working on mobile
+                            if (window.innerWidth < 768) {
+                                document.body.style.overflow = 'auto';
+                                document.documentElement.style.overflow = 'auto';
+                            }
                         }, 100);
                     }
                 });
