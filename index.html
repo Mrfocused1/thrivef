@@ -227,6 +227,11 @@
             .wizard-overlay {
                 display: none !important;
             }
+
+            /* Hide entire Profile Configured wizard section on mobile */
+            #mod-08 {
+                display: none !important;
+            }
         }
 
         /* During hero intro, hide main content below */
@@ -1430,25 +1435,23 @@
 
 
             // --- MODULE 08: SIGNUP WIZARD (PINNED + PROGRESS) ---
-            // Desktop: Pinned progress animation. Mobile: Scroll-based animation without pinning
+            // Desktop only - section hidden on mobile
             const isMobileMod08 = window.matchMedia("(max-width: 767px)").matches;
 
-            const tlWizard = gsap.timeline({
-                scrollTrigger: {
-                    trigger: "#mod-08",
-                    start: isMobileMod08 ? "top center" : "center center",
-                    end: isMobileMod08 ? "bottom top" : "+=100%",
-                    pin: !isMobileMod08, // Only pin on desktop
-                    scrub: 0.5,
-                    invalidateOnRefresh: true
-                }
-            });
-
-            tlWizard.to("#wizard-progress", { scaleY: 1, ease: "none" });
-
-            // Only animate overlay on desktop (hidden on mobile via CSS)
             if (!isMobileMod08) {
-                tlWizard.to(".wizard-overlay", { opacity: 1, duration: 0.5 }, ">-0.2");
+                const tlWizard = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: "#mod-08",
+                        start: "center center",
+                        end: "+=100%",
+                        pin: true,
+                        scrub: 0.5,
+                        invalidateOnRefresh: true
+                    }
+                });
+
+                tlWizard.to("#wizard-progress", { scaleY: 1, ease: "none" })
+                        .to(".wizard-overlay", { opacity: 1, duration: 0.5 }, ">-0.2");
             }
 
 
