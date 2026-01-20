@@ -120,14 +120,57 @@
             stroke-dashoffset: 1000;
         }
 
-        /* Horizontal scroll section - GSAP controlled on all devices */
+        /* Horizontal scroll section */
         .aisle-wrapper {
             will-change: transform; /* GPU acceleration hint */
-            touch-action: none; /* GSAP controls all scroll */
+        }
+
+        /* Desktop: GSAP controls horizontal scroll */
+        @media (min-width: 768px) {
+            .aisle-wrapper {
+                touch-action: none;
+            }
+            #mod-05 {
+                touch-action: pan-y;
+            }
+        }
+
+        /* Mobile: Native scroll */
+        @media (max-width: 767px) {
+            #mod-05 {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .aisle-wrapper {
+                touch-action: pan-x pan-y;
+            }
+        }
+
+        /* Z-Index management for sections to prevent overlap */
+        #mod-04 {
+            position: relative;
+            z-index: 10;
         }
 
         #mod-05 {
-            touch-action: pan-y; /* Only allow vertical page scroll, horizontal handled by GSAP */
+            position: relative;
+            z-index: 20;
+        }
+
+        /* Ensure ScrollTrigger pin-spacers inherit z-index */
+        .pin-spacer {
+            z-index: inherit !important;
+        }
+
+        /* Desktop pinned sections should maintain proper stacking */
+        @media (min-width: 768px) {
+            #mod-04[data-pin-active="true"] {
+                z-index: 10;
+            }
+
+            #mod-05[data-pin-active="true"] {
+                z-index: 20;
+            }
         }
 
         /* Animated Hero Sections */
@@ -1354,49 +1397,82 @@
 
 
             // --- MODULE 04: MATCH GRAPH (PINNED + MOTIONPATH) ---
-            // Desktop: Pinned animation. Mobile: Scroll-based animation without pinning
             const isMobileMod04 = window.matchMedia("(max-width: 767px)").matches;
 
-            const tlGraph = gsap.timeline({
-                scrollTrigger: {
+            if (isMobileMod04) {
+                // MOBILE: Simple scroll-triggered reveal without pinning or scrub
+                // Immediate reveal when section enters viewport
+                ScrollTrigger.create({
                     trigger: "#mod-04",
-                    start: isMobileMod04 ? "top center" : "top top",
-                    end: isMobileMod04 ? "bottom top" : "+=150%",
-                    scrub: 1,
-                    pin: !isMobileMod04, // Only pin on desktop
-                    invalidateOnRefresh: true
-                }
-            });
+                    start: "top 80%",
+                    onEnter: () => {
+                        gsap.to("#match-svg", { opacity: 1, duration: 0.5 });
+                        gsap.to("#match-path-main", { strokeDashoffset: 0, duration: 1.5, ease: "power2.out" });
+                        gsap.to("#pulse-dot", {
+                            motionPath: {
+                                path: "#match-path-main",
+                                align: "#match-path-main",
+                                alignOrigin: [0.5, 0.5]
+                            },
+                            duration: 1.5,
+                            ease: "power2.out"
+                        });
+                        gsap.to(".match-text", { opacity: 1, y: 0, stagger: 0.2, duration: 0.8 });
+                    }
+                });
+            } else {
+                // DESKTOP: Pinned scrub animation
+                const tlGraph = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: "#mod-04",
+                        start: "top top",
+                        end: "+=150%",
+                        scrub: 1,
+                        pin: true,
+                        invalidateOnRefresh: true
+                    }
+                });
 
-            tlGraph.to("#match-svg", { opacity: 1, duration: 0.5 })
-                   .to("#match-path-main", { strokeDashoffset: 0, duration: 2, ease: "none" })
-                   .to("#pulse-dot", {
-                       motionPath: {
-                           path: "#match-path-main",
-                           align: "#match-path-main",
-                           alignOrigin: [0.5, 0.5]
-                       },
-                       duration: 2,
-                       ease: "none"
-                   }, "<") // Sync with line draw
-                   .to(".match-text", { opacity: 1, y: 0, stagger: 0.2, duration: 1 }, "-=1");
+                tlGraph.to("#match-svg", { opacity: 1, duration: 0.5 })
+                       .to("#match-path-main", { strokeDashoffset: 0, duration: 2, ease: "none" })
+                       .to("#pulse-dot", {
+                           motionPath: {
+                               path: "#match-path-main",
+                               align: "#match-path-main",
+                               alignOrigin: [0.5, 0.5]
+                           },
+                           duration: 2,
+                           ease: "none"
+                       }, "<")
+                       .to(".match-text", { opacity: 1, y: 0, stagger: 0.2, duration: 1 }, "-=1");
+            }
 
 
             // --- MODULE 05: HORIZONTAL AISLES ---
-            // Pinned horizontal scroll on all devices (desktop and mobile)
+            const isMobileMod05 = window.matchMedia("(max-width: 767px)").matches;
             const aisleWrapper = document.querySelector(".aisle-wrapper");
 
-            gsap.to(aisleWrapper, {
-                x: () => -(aisleWrapper.scrollWidth - window.innerWidth),
-                ease: "none",
-                scrollTrigger: {
-                    trigger: "#mod-05",
-                    pin: true,
-                    scrub: 1,
-                    end: () => "+=" + aisleWrapper.scrollWidth,
-                    invalidateOnRefresh: true
-                }
-            });
+            if (isMobileMod05) {
+                // MOBILE: Native horizontal scroll (no GSAP pinning)
+                // Let users swipe horizontally within the container
+                const mod05 = document.getElementById("mod-05");
+                mod05.style.overflowX = "auto";
+                mod05.style.webkitOverflowScrolling = "touch";
+                aisleWrapper.style.touchAction = "pan-x pan-y";
+            } else {
+                // DESKTOP: Pinned horizontal scroll animation
+                gsap.to(aisleWrapper, {
+                    x: () => -(aisleWrapper.scrollWidth - window.innerWidth),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: "#mod-05",
+                        pin: true,
+                        scrub: 1,
+                        end: () => "+=" + aisleWrapper.scrollWidth,
+                        invalidateOnRefresh: true
+                    }
+                });
+            }
 
             // Handle orientation changes on mobile
             window.addEventListener("orientationchange", () => {
