@@ -120,36 +120,14 @@
             stroke-dashoffset: 1000;
         }
 
-        /* Horizontal scroll section - touch optimization */
+        /* Horizontal scroll section - GSAP controlled on all devices */
         .aisle-wrapper {
             will-change: transform; /* GPU acceleration hint */
+            touch-action: none; /* GSAP controls all scroll */
         }
 
-        /* Desktop: Only allow vertical page scroll, horizontal handled by GSAP */
-        @media (min-width: 768px) {
-            #mod-05 {
-                touch-action: pan-y;
-            }
-
-            .aisle-wrapper {
-                touch-action: none;
-            }
-        }
-
-        /* Mobile: Enable native horizontal scrolling */
-        @media (max-width: 767px) {
-            #mod-05 {
-                overflow-x: auto !important; /* Override overflow-hidden */
-                overflow-y: visible !important;
-                touch-action: pan-x pan-y !important; /* Allow both horizontal and vertical scroll */
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .aisle-wrapper {
-                touch-action: pan-x pan-y;
-                -webkit-overflow-scrolling: touch;
-                overflow-x: auto;
-            }
+        #mod-05 {
+            touch-action: pan-y; /* Only allow vertical page scroll, horizontal handled by GSAP */
         }
 
         /* Animated Hero Sections */
@@ -1413,25 +1391,20 @@
 
 
             // --- MODULE 05: HORIZONTAL AISLES ---
-            // Desktop: Pinned horizontal scroll. Mobile: Native horizontal scroll
+            // Pinned horizontal scroll on all devices (desktop and mobile)
             const aisleWrapper = document.querySelector(".aisle-wrapper");
-            const isMobileMod05 = window.matchMedia("(max-width: 767px)").matches;
 
-            if (!isMobileMod05) {
-                // Desktop only: GSAP horizontal scroll with pinning
-                gsap.to(aisleWrapper, {
-                    x: () => -(aisleWrapper.scrollWidth - window.innerWidth),
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: "#mod-05",
-                        pin: true,
-                        scrub: 1,
-                        end: () => "+=" + aisleWrapper.scrollWidth,
-                        invalidateOnRefresh: true
-                    }
-                });
-            }
-            // Mobile: Native horizontal scroll (no GSAP animation needed)
+            gsap.to(aisleWrapper, {
+                x: () => -(aisleWrapper.scrollWidth - window.innerWidth),
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#mod-05",
+                    pin: true,
+                    scrub: 1,
+                    end: () => "+=" + aisleWrapper.scrollWidth,
+                    invalidateOnRefresh: true
+                }
+            });
 
             // Handle orientation changes on mobile
             window.addEventListener("orientationchange", () => {
