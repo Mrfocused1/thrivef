@@ -244,6 +244,11 @@
                 height: 100%;
                 touch-action: manipulation;
             }
+
+            /* Hide Profile Configured overlay on mobile */
+            .wizard-overlay {
+                display: none !important;
+            }
         }
 
         /* During hero intro, hide main content below */
@@ -1466,8 +1471,12 @@
                 }
             });
 
-            tlWizard.to("#wizard-progress", { scaleY: 1, ease: "none" })
-                    .to(".wizard-overlay", { opacity: 1, duration: 0.5 }, ">-0.2");
+            tlWizard.to("#wizard-progress", { scaleY: 1, ease: "none" });
+
+            // Only animate overlay on desktop (hidden on mobile via CSS)
+            if (!isMobileMod08) {
+                tlWizard.to(".wizard-overlay", { opacity: 1, duration: 0.5 }, ">-0.2");
+            }
 
 
             // --- MODULE 10: BENEFITS BATCH ---
