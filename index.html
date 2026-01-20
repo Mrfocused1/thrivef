@@ -181,9 +181,16 @@
                 rgba(0, 0, 0, 0.6) 0%,
                 rgba(0, 0, 0, 0.1) 100%
             );
+            z-index: 1;
+        }
+
+        .hero-section .bg video {
+            z-index: 0;
         }
 
         .hero-section h2 {
+            position: relative;
+            z-index: 2;
             font-size: clamp(2rem, 8vw, 8rem);
             font-weight: 600;
             line-height: 1.2;
@@ -438,6 +445,10 @@
                 <div class="outer">
                     <div class="inner">
                         <div class="bg">
+                            <!-- Video Background -->
+                            <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover">
+                                <source src="intro-slide2.mp4" type="video/mp4">
+                            </video>
                             <h2 class="section-heading">Discover Your Path</h2>
                         </div>
                     </div>
