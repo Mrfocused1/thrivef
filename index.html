@@ -653,13 +653,15 @@
                         <div class="w-full h-px bg-white/30 group-hover:bg-accent transition-colors relative z-10"></div>
                     </div>
 
-                    <div class="aisle-card w-[80vw] md:w-[25vw] h-[60vh] bg-white border border-gray-200 p-8 flex flex-col justify-between shrink-0 hover:border-accent transition-colors group">
-                        <div class="font-mono text-accent">04</div>
-                        <div>
-                            <h3 class="font-display text-4xl mb-2 group-hover:translate-x-2 transition-transform">Automotive</h3>
-                            <p class="text-sm text-subtle">Car Dealerships, Mechanics, Detailing</p>
+                    <div class="aisle-card w-[80vw] md:w-[25vw] h-[60vh] border border-gray-200 p-8 flex flex-col justify-between shrink-0 hover:border-accent transition-colors group relative overflow-hidden" style="background-image: url('automotive.jpg'); background-size: cover; background-position: center;">
+                        <!-- Dark overlay for text readability -->
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors"></div>
+                        <div class="font-mono text-accent relative z-10">04</div>
+                        <div class="relative z-10">
+                            <h3 class="font-display text-4xl mb-2 group-hover:translate-x-2 transition-transform text-white">Automotive</h3>
+                            <p class="text-sm text-gray-200">Car Dealerships, Mechanics, Detailing</p>
                         </div>
-                        <div class="w-full h-px bg-gray-200 group-hover:bg-accent transition-colors"></div>
+                        <div class="w-full h-px bg-white/30 group-hover:bg-accent transition-colors relative z-10"></div>
                     </div>
                      <div class="aisle-card w-[80vw] md:w-[25vw] h-[60vh] bg-graphite text-white p-8 flex flex-col justify-center items-center shrink-0">
                         <h3 class="font-display text-3xl mb-4 text-center">See All 40+ Aisles</h3>
