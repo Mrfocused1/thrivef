@@ -1351,15 +1351,17 @@
 
 
             // --- MODULE 04: MATCH GRAPH (PINNED + MOTIONPATH) ---
-            // Full animation for ALL devices (mobile + desktop)
+            // Desktop: Full pinned animation. Mobile: Simple fade-in without pinning
+            const isMobileMod04 = window.matchMedia("(max-width: 767px)").matches;
+
             const tlGraph = gsap.timeline({
                 scrollTrigger: {
                     trigger: "#mod-04",
-                    start: "top top",
-                    end: "+=150%",
+                    start: isMobileMod04 ? "top 80%" : "top top",
+                    end: isMobileMod04 ? "top 50%" : "+=150%",
                     scrub: 1,
-                    pin: true,
-                    invalidateOnRefresh: true // Recalculate on resize/orientation change
+                    pin: !isMobileMod04, // Only pin on desktop
+                    invalidateOnRefresh: true
                 }
             });
 
@@ -1377,20 +1379,26 @@
                    .to(".match-text", { opacity: 1, y: 0, stagger: 0.2, duration: 1 }, "-=1");
 
 
-            // --- MODULE 05: HORIZONTAL AISLES (ALL DEVICES) ---
+            // --- MODULE 05: HORIZONTAL AISLES ---
+            // Desktop: Pinned horizontal scroll. Mobile: Native horizontal scroll
             const aisleWrapper = document.querySelector(".aisle-wrapper");
+            const isMobileMod05 = window.matchMedia("(max-width: 767px)").matches;
 
-            gsap.to(aisleWrapper, {
-                x: () => -(aisleWrapper.scrollWidth - window.innerWidth),
-                ease: "none",
-                scrollTrigger: {
-                    trigger: "#mod-05",
-                    pin: true,
-                    scrub: 1,
-                    end: () => "+=" + aisleWrapper.scrollWidth,
-                    invalidateOnRefresh: true // Recalculate on resize/orientation change
-                }
-            });
+            if (!isMobileMod05) {
+                // Desktop only: GSAP horizontal scroll with pinning
+                gsap.to(aisleWrapper, {
+                    x: () => -(aisleWrapper.scrollWidth - window.innerWidth),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: "#mod-05",
+                        pin: true,
+                        scrub: 1,
+                        end: () => "+=" + aisleWrapper.scrollWidth,
+                        invalidateOnRefresh: true
+                    }
+                });
+            }
+            // Mobile: Native horizontal scroll (no GSAP animation needed)
 
             // Handle orientation changes on mobile
             window.addEventListener("orientationchange", () => {
@@ -1416,15 +1424,17 @@
 
 
             // --- MODULE 08: SIGNUP WIZARD (PINNED + PROGRESS) ---
-            // Full animation for ALL devices (mobile + desktop)
+            // Desktop: Pinned progress animation. Mobile: Simple fade-in without pinning
+            const isMobileMod08 = window.matchMedia("(max-width: 767px)").matches;
+
             const tlWizard = gsap.timeline({
                 scrollTrigger: {
                     trigger: "#mod-08",
-                    start: "center center",
-                    end: "+=100%",
-                    pin: true,
+                    start: isMobileMod08 ? "top 80%" : "center center",
+                    end: isMobileMod08 ? "top 50%" : "+=100%",
+                    pin: !isMobileMod08, // Only pin on desktop
                     scrub: 0.5,
-                    invalidateOnRefresh: true // Recalculate on resize/orientation change
+                    invalidateOnRefresh: true
                 }
             });
 
