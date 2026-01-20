@@ -206,21 +206,7 @@
             overflow: hidden;
         }
 
-        .first .bg {
-            background-image: linear-gradient(
-                180deg,
-                rgba(0, 0, 0, 0.6) 0%,
-                rgba(0, 0, 0, 0.1) 100%
-            ), url("https://assets.codepen.io/16327/site-landscape-1.jpg");
-        }
-
-        .second .bg {
-            background-image: linear-gradient(
-                180deg,
-                rgba(0, 0, 0, 0.6) 0%,
-                rgba(0, 0, 0, 0.1) 100%
-            ), url("https://assets.codepen.io/16327/site-landscape-2.jpg");
-        }
+        /* Slide backgrounds now use video elements instead of static images */
 
 
         .hero-section h2 * {
@@ -436,6 +422,10 @@
                 <div class="outer">
                     <div class="inner">
                         <div class="bg one">
+                            <!-- Video Background -->
+                            <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover">
+                                <source src="intro-slide1.mp4" type="video/mp4">
+                            </video>
                             <h2 class="section-heading">Thrive Fair 2026</h2>
                         </div>
                     </div>
