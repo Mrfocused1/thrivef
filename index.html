@@ -242,8 +242,15 @@
             }
 
             /* Hide second intro slide on desktop only */
+            section.second.hero-section,
+            .second.hero-section,
             .hero-section.second {
                 display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+                position: absolute !important;
+                z-index: -9999 !important;
             }
         }
 
@@ -1042,6 +1049,15 @@
 
             // --- MODULE 01: ANIMATED HERO SECTIONS ---
             gsap.registerPlugin(Observer);
+
+            // On desktop, remove second slide from DOM completely
+            if (window.innerWidth >= 768) {
+                const secondSlide = document.querySelector('.second.hero-section');
+                if (secondSlide) {
+                    secondSlide.remove();
+                    console.log('Removed second hero slide on desktop');
+                }
+            }
 
             let heroSections = document.querySelectorAll(".hero-section"),
                 images = document.querySelectorAll(".hero-section .bg"),
