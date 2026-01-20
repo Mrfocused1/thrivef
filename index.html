@@ -257,6 +257,19 @@
             pointer-events: none;
         }
 
+        /* Hide HUD (section indicator) during intro */
+        body.hero-mode nav .flex.items-center.gap-4 {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Show HUD after intro completes */
+        body.hero-complete nav .flex.items-center.gap-4 {
+            opacity: 1;
+            pointer-events: auto;
+            transition: opacity 0.5s ease;
+        }
+
         /* When hero is complete, ensure fully scrollable layout */
         body.hero-complete .hero-section {
             display: none !important; /* Ensure hero sections are gone */
