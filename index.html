@@ -1176,7 +1176,7 @@
             const isMobile = window.matchMedia("(max-width: 767px)").matches;
 
             if (isMobile) {
-                // MOBILE: Use tap-to-advance OR auto-skip on scroll attempt
+                // MOBILE: Use tap-to-advance AND swipe detection
                 let tapHandler = (e) => {
                     if (!animating && !heroComplete) {
                         if (currentIndex < heroSections.length - 1) {
@@ -1192,22 +1192,41 @@
                     section.addEventListener('click', tapHandler);
                 });
 
-                // Auto-skip intro if user tries to scroll on mobile
-                let scrollAttempts = 0;
-                let scrollHandler = (e) => {
+                // Swipe detection for mobile
+                let touchStartY = 0;
+                let touchEndY = 0;
+                let swipeThreshold = 50; // Minimum distance for swipe
+
+                let handleTouchStart = (e) => {
                     if (!heroComplete) {
-                        scrollAttempts++;
-                        if (scrollAttempts > 1) {
-                            // User is trying to scroll, skip intro
-                            completeHeroIntro();
-                            window.removeEventListener('wheel', scrollHandler);
-                            window.removeEventListener('touchmove', scrollHandler);
+                        touchStartY = e.touches[0].clientY;
+                    }
+                };
+
+                let handleTouchEnd = (e) => {
+                    if (!heroComplete && !animating) {
+                        touchEndY = e.changedTouches[0].clientY;
+                        let swipeDistance = touchStartY - touchEndY;
+
+                        // Swipe up (advance forward)
+                        if (swipeDistance > swipeThreshold) {
+                            if (currentIndex < heroSections.length - 1) {
+                                gotoSection(currentIndex + 1, 1);
+                            } else {
+                                completeHeroIntro();
+                            }
+                        }
+                        // Swipe down (go back)
+                        else if (swipeDistance < -swipeThreshold) {
+                            if (currentIndex > 0) {
+                                gotoSection(currentIndex - 1, -1);
+                            }
                         }
                     }
                 };
 
-                window.addEventListener('wheel', scrollHandler, { passive: true });
-                window.addEventListener('touchmove', scrollHandler, { passive: true });
+                document.addEventListener('touchstart', handleTouchStart, { passive: true });
+                document.addEventListener('touchend', handleTouchEnd, { passive: true });
 
             } else {
                 // DESKTOP: Use Observer for wheel/swipe control
