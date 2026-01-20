@@ -231,8 +231,11 @@
         }
 
         /* During hero intro, hide main content below */
-        body.hero-mode {
-            overflow: hidden;
+        /* On mobile: allow scrolling. On desktop: prevent scrolling during intro */
+        @media (min-width: 768px) {
+            body.hero-mode {
+                overflow: hidden;
+            }
         }
 
         body.hero-mode #main-content {
@@ -1173,7 +1176,7 @@
             const isMobile = window.matchMedia("(max-width: 767px)").matches;
 
             if (isMobile) {
-                // MOBILE: Use tap-to-advance
+                // MOBILE: Use tap-to-advance OR auto-skip on scroll attempt
                 let tapHandler = (e) => {
                     if (!animating && !heroComplete) {
                         if (currentIndex < heroSections.length - 1) {
@@ -1188,6 +1191,23 @@
                 heroSections.forEach(section => {
                     section.addEventListener('click', tapHandler);
                 });
+
+                // Auto-skip intro if user tries to scroll on mobile
+                let scrollAttempts = 0;
+                let scrollHandler = (e) => {
+                    if (!heroComplete) {
+                        scrollAttempts++;
+                        if (scrollAttempts > 1) {
+                            // User is trying to scroll, skip intro
+                            completeHeroIntro();
+                            window.removeEventListener('wheel', scrollHandler);
+                            window.removeEventListener('touchmove', scrollHandler);
+                        }
+                    }
+                };
+
+                window.addEventListener('wheel', scrollHandler, { passive: true });
+                window.addEventListener('touchmove', scrollHandler, { passive: true });
 
             } else {
                 // DESKTOP: Use Observer for wheel/swipe control
