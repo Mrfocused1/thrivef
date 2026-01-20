@@ -370,6 +370,19 @@
         <i data-lucide="help-circle" class="w-5 h-5 text-graphite group-hover:text-accent transition-colors"></i>
     </button>
 
+    <!-- SKIP INTRO BUTTON (Only visible during hero intro) -->
+    <button id="skip-intro-btn" class="fixed top-20 right-6 z-50 px-4 py-2 bg-white/90 backdrop-blur-sm border border-accent/30 rounded-full font-mono text-xs uppercase tracking-widest text-graphite hover:bg-accent hover:text-white transition-all pointer-events-auto">
+        Skip Intro
+    </button>
+
+    <!-- TAP TO CONTINUE INDICATOR (Mobile only) -->
+    <div id="tap-indicator" class="fixed bottom-12 left-1/2 -translate-x-1/2 z-50 px-6 py-3 bg-black/60 backdrop-blur-sm rounded-full font-mono text-xs uppercase tracking-widest text-white flex items-center gap-2 pointer-events-none md:hidden animate-pulse">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path>
+        </svg>
+        Tap to Continue
+    </div>
+
     <!-- MAIN SCROLL CONTAINER -->
     <main id="smooth-wrapper">
         <div id="smooth-content">
@@ -1093,75 +1106,116 @@
             // Start on first section
             gotoSection(0, 1);
 
-            // Enable swipe control immediately
-            observer = Observer.create({
-                type: "wheel,touch,pointer",
-                wheelSpeed: -1,
-                onDown: () => {
-                    // Swipe up = go to previous section
-                    if (!animating && currentIndex > 0) {
-                        gotoSection(currentIndex - 1, -1);
+            // Function to complete hero intro and show main content
+            function completeHeroIntro() {
+                if (heroComplete) return; // Already completed
+
+                heroComplete = true;
+                if (observer) observer.kill();
+
+                // Hide skip button and tap indicator
+                const skipBtn = document.getElementById('skip-intro-btn');
+                const tapIndicator = document.getElementById('tap-indicator');
+                if (skipBtn) skipBtn.style.display = 'none';
+                if (tapIndicator) tapIndicator.style.display = 'none';
+
+                // Fade out the current hero section
+                gsap.to(heroSections[currentIndex], {
+                    autoAlpha: 0,
+                    duration: 0.8,
+                    onComplete: () => {
+                        // Remove all hero sections from DOM
+                        heroSections.forEach(section => {
+                            section.remove();
+                        });
+
+                        // Transition to normal mode
+                        document.body.classList.remove('hero-mode');
+                        document.body.classList.add('hero-complete');
+
+                        // Show static hero section
+                        const staticHero = document.getElementById('static-hero');
+                        staticHero.style.display = 'flex';
+
+                        // Reveal main content
+                        const mainContent = document.getElementById('main-content');
+                        mainContent.style.opacity = '1';
+                        mainContent.style.pointerEvents = 'auto';
+
+                        // Fade in static hero
+                        gsap.fromTo(staticHero,
+                            { opacity: 0, y: 20 },
+                            { opacity: 1, y: 0, duration: 1, ease: "power2.out" }
+                        );
+
+                        // Scroll to top and refresh
+                        window.scrollTo({ top: 0, behavior: 'instant' });
+
+                        setTimeout(() => {
+                            ScrollTrigger.refresh(true);
+                            setupHudScrollTriggers();
+                            // Reinitialize icons for the static hero
+                            lucide.createIcons();
+                            // Update logo color for static hero
+                            updateLogoColor();
+                        }, 100);
                     }
-                },
-                onUp: () => {
-                    // Swipe down = go to next section
-                    if (!animating) {
+                });
+            }
+
+            // Skip intro button handler
+            const skipIntroBtn = document.getElementById('skip-intro-btn');
+            if (skipIntroBtn) {
+                skipIntroBtn.addEventListener('click', completeHeroIntro);
+            }
+
+            // Detect if device is mobile/touch
+            const isMobile = window.matchMedia("(max-width: 767px)").matches;
+
+            if (isMobile) {
+                // MOBILE: Use tap-to-advance
+                let tapHandler = (e) => {
+                    if (!animating && !heroComplete) {
                         if (currentIndex < heroSections.length - 1) {
-                            // Still in hero sections, advance to next
                             gotoSection(currentIndex + 1, 1);
-                        } else if (!heroComplete) {
-                            // Just finished last hero section, transition to scrollable mode
-                            heroComplete = true;
-                            observer.kill();
-
-                            // Fade out the last hero section
-                            gsap.to(heroSections[currentIndex], {
-                                autoAlpha: 0,
-                                duration: 0.8,
-                                onComplete: () => {
-                                    // Remove all hero sections from DOM
-                                    heroSections.forEach(section => {
-                                        section.remove();
-                                    });
-
-                                    // Transition to normal mode
-                                    document.body.classList.remove('hero-mode');
-                                    document.body.classList.add('hero-complete');
-
-                                    // Show static hero section
-                                    const staticHero = document.getElementById('static-hero');
-                                    staticHero.style.display = 'flex';
-
-                                    // Reveal main content
-                                    const mainContent = document.getElementById('main-content');
-                                    mainContent.style.opacity = '1';
-                                    mainContent.style.pointerEvents = 'auto';
-
-                                    // Fade in static hero
-                                    gsap.fromTo(staticHero,
-                                        { opacity: 0, y: 20 },
-                                        { opacity: 1, y: 0, duration: 1, ease: "power2.out" }
-                                    );
-
-                                    // Scroll to top and refresh
-                                    window.scrollTo({ top: 0, behavior: 'instant' });
-
-                                    setTimeout(() => {
-                                        ScrollTrigger.refresh(true);
-                                        setupHudScrollTriggers();
-                                        // Reinitialize icons for the static hero
-                                        lucide.createIcons();
-                                        // Update logo color for static hero
-                                        updateLogoColor();
-                                    }, 100);
-                                }
-                            });
+                        } else {
+                            completeHeroIntro();
                         }
                     }
-                },
-                tolerance: 10,
-                preventDefault: true
-            });
+                };
+
+                // Add tap handler to each hero section
+                heroSections.forEach(section => {
+                    section.addEventListener('click', tapHandler);
+                });
+
+            } else {
+                // DESKTOP: Use Observer for wheel/swipe control
+                observer = Observer.create({
+                    type: "wheel,touch,pointer",
+                    wheelSpeed: -1,
+                    onDown: () => {
+                        // Swipe up = go to previous section
+                        if (!animating && currentIndex > 0) {
+                            gotoSection(currentIndex - 1, -1);
+                        }
+                    },
+                    onUp: () => {
+                        // Swipe down = go to next section
+                        if (!animating) {
+                            if (currentIndex < heroSections.length - 1) {
+                                // Still in hero sections, advance to next
+                                gotoSection(currentIndex + 1, 1);
+                            } else if (!heroComplete) {
+                                // Just finished last hero section
+                                completeHeroIntro();
+                            }
+                        }
+                    },
+                    tolerance: 10,
+                    preventDefault: true
+                });
+            }
 
             // Listen for scroll events to update logo color
             window.addEventListener('scroll', updateLogoColor);
