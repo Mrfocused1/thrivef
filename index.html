@@ -266,8 +266,23 @@
         }
 
         /* When over dark sections, make dots white */
-        .logo-adaptive.on-dark .logo-dots {
+        .logo-svg.on-dark .logo-dots {
             fill: white;
+        }
+
+        /* Logo text color adaptation - white on dark, black on light */
+        body.hero-mode .logo-text {
+            color: white;
+        }
+
+        .logo-text {
+            color: #1a1a1a;
+            transition: color 0.3s ease;
+        }
+
+        /* When over dark sections, make text white */
+        .logo-text.on-dark {
+            color: white;
         }
     </style>
 </head>
@@ -281,7 +296,7 @@
     <!-- PERSISTENT UI: HUD -->
     <nav class="fixed top-0 left-0 w-full z-50 px-6 py-4 flex justify-between items-center pointer-events-none">
         <div class="pointer-events-auto flex items-center gap-3">
-            <svg class="h-8 w-auto logo-adaptive" viewBox="0 0 969 576" xmlns="http://www.w3.org/2000/svg">
+            <svg class="h-8 w-auto logo-svg" viewBox="0 0 969 576" xmlns="http://www.w3.org/2000/svg">
                 <g transform="matrix(1,0,0,1,-31.791,-230.851)">
                     <!-- All green parts stay green -->
                     <g class="logo-green" fill="rgb(126,202,174)">
@@ -327,7 +342,7 @@
                     </g>
                 </g>
             </svg>
-            <span class="font-mono text-xs uppercase tracking-widest hidden sm:block text-graphite">THRIVE FAIR 2026</span>
+            <span class="font-mono text-xs uppercase tracking-widest hidden sm:block logo-text">THRIVE FAIR 2026</span>
         </div>
 
         <!-- Connection HUD -->
@@ -373,7 +388,7 @@
                 <div class="outer">
                     <div class="inner">
                         <div class="bg">
-                            <h2 class="section-heading">Work Experience</h2>
+                            <h2 class="section-heading">Discover Your Path</h2>
                         </div>
                     </div>
                 </div>
@@ -382,7 +397,7 @@
                 <div class="outer">
                     <div class="inner">
                         <div class="bg">
-                            <h2 class="section-heading">Career Opportunities</h2>
+                            <h2 class="section-heading">Connect with Local Businesses</h2>
                         </div>
                     </div>
                 </div>
@@ -391,7 +406,7 @@
                 <div class="outer">
                     <div class="inner">
                         <div class="bg">
-                            <h2 class="section-heading">Corporate Learning</h2>
+                            <h2 class="section-heading">Build Your Skills</h2>
                         </div>
                     </div>
                 </div>
@@ -400,7 +415,7 @@
                 <div class="outer">
                     <div class="inner">
                         <div class="bg">
-                            <h2 class="section-heading">The Connection Engine</h2>
+                            <h2 class="section-heading">Where Opportunities Meet Talent</h2>
                         </div>
                     </div>
                 </div>
@@ -422,7 +437,7 @@
                     <!-- Event Label -->
                     <div class="inline-block mb-6">
                         <span class="font-mono text-xs uppercase tracking-widest text-accent border border-accent/30 px-4 py-2 rounded-full">
-                            2026 Career Fair
+                            2026 Business & Career Fair
                         </span>
                     </div>
 
@@ -433,7 +448,7 @@
 
                     <!-- Subheading -->
                     <p class="font-mono text-lg md:text-xl text-gray-300 mb-4 max-w-3xl mx-auto">
-                        The Connection Engine for Students, Employers & Educators
+                        Connecting Local Service Professionals with Opportunities in London
                     </p>
 
                     <!-- Event Details -->
@@ -497,10 +512,10 @@
                         <div class="w-full md:w-1/2">
                             <h2 class="font-display text-4xl mb-8">Identify Protocol</h2>
                             <div class="flex flex-wrap gap-3" id="role-container">
-                                <button class="role-btn active px-6 py-3 border border-graphite rounded-full font-medium hover:bg-gray-50 transition-all text-left w-full md:w-auto" data-role="student">Student / Grad</button>
-                                <button class="role-btn px-6 py-3 border border-gray-200 text-subtle rounded-full font-medium hover:border-graphite hover:text-graphite transition-all text-left w-full md:w-auto" data-role="switcher">Career Switcher</button>
-                                <button class="role-btn px-6 py-3 border border-gray-200 text-subtle rounded-full font-medium hover:border-graphite hover:text-graphite transition-all text-left w-full md:w-auto" data-role="employer">Employer</button>
-                                <button class="role-btn px-6 py-3 border border-gray-200 text-subtle rounded-full font-medium hover:border-graphite hover:text-graphite transition-all text-left w-full md:w-auto" data-role="partner">Learning Partner</button>
+                                <button class="role-btn active px-6 py-3 border border-graphite rounded-full font-medium hover:bg-gray-50 transition-all text-left w-full md:w-auto" data-role="student">Job Seeker</button>
+                                <button class="role-btn px-6 py-3 border border-gray-200 text-subtle rounded-full font-medium hover:border-graphite hover:text-graphite transition-all text-left w-full md:w-auto" data-role="switcher">Career Changer</button>
+                                <button class="role-btn px-6 py-3 border border-gray-200 text-subtle rounded-full font-medium hover:border-graphite hover:text-graphite transition-all text-left w-full md:w-auto" data-role="employer">Business Owner</button>
+                                <button class="role-btn px-6 py-3 border border-gray-200 text-subtle rounded-full font-medium hover:border-graphite hover:text-graphite transition-all text-left w-full md:w-auto" data-role="partner">Training Provider</button>
                             </div>
                         </div>
                         <div class="w-full md:w-1/2">
@@ -508,8 +523,8 @@
                                 <div class="absolute top-0 right-0 p-4 opacity-20">
                                     <i data-lucide="fingerprint" class="w-24 h-24"></i>
                                 </div>
-                                <h3 class="font-mono text-accent text-sm mb-2 role-label">ACCESS GRANTED: STUDENT</h3>
-                                <p class="font-sans text-xl role-desc">Unlock apprenticeship routes, graduate schemes, and CV workshops tailored to entry-level talent.</p>
+                                <h3 class="font-mono text-accent text-sm mb-2 role-label">ACCESS GRANTED: JOB SEEKER</h3>
+                                <p class="font-sans text-xl role-desc">Explore opportunities in London's thriving service industry, from beauty salons to fine dining establishments.</p>
                                 <div class="mt-6 h-1 w-full bg-gray-200 rounded overflow-hidden">
                                     <div class="h-full bg-graphite w-1/4 animate-pulse"></div>
                                 </div>
@@ -563,8 +578,8 @@
                     <div class="aisle-card w-[80vw] md:w-[25vw] h-[60vh] bg-white border border-gray-200 p-8 flex flex-col justify-between shrink-0 hover:border-accent transition-colors group">
                         <div class="font-mono text-accent">01</div>
                         <div>
-                            <h3 class="font-display text-4xl mb-2 group-hover:translate-x-2 transition-transform">FinTech</h3>
-                            <p class="text-sm text-subtle">Banking, Crypto, Insurance</p>
+                            <h3 class="font-display text-4xl mb-2 group-hover:translate-x-2 transition-transform">Beauty & Wellness</h3>
+                            <p class="text-sm text-subtle">Hair Styling, Makeup, Spas</p>
                         </div>
                         <div class="w-full h-px bg-gray-200 group-hover:bg-accent transition-colors"></div>
                     </div>
@@ -572,8 +587,8 @@
                     <div class="aisle-card w-[80vw] md:w-[25vw] h-[60vh] bg-white border border-gray-200 p-8 flex flex-col justify-between shrink-0 hover:border-accent transition-colors group">
                         <div class="font-mono text-accent">02</div>
                         <div>
-                            <h3 class="font-display text-4xl mb-2 group-hover:translate-x-2 transition-transform">Creative</h3>
-                            <p class="text-sm text-subtle">Design, Media, UI/UX</p>
+                            <h3 class="font-display text-4xl mb-2 group-hover:translate-x-2 transition-transform">Hospitality</h3>
+                            <p class="text-sm text-subtle">Restaurants, Cafes, Catering</p>
                         </div>
                         <div class="w-full h-px bg-gray-200 group-hover:bg-accent transition-colors"></div>
                     </div>
@@ -581,8 +596,8 @@
                     <div class="aisle-card w-[80vw] md:w-[25vw] h-[60vh] bg-white border border-gray-200 p-8 flex flex-col justify-between shrink-0 hover:border-accent transition-colors group">
                         <div class="font-mono text-accent">03</div>
                         <div>
-                            <h3 class="font-display text-4xl mb-2 group-hover:translate-x-2 transition-transform">Health</h3>
-                            <p class="text-sm text-subtle">NHS, BioTech, Care</p>
+                            <h3 class="font-display text-4xl mb-2 group-hover:translate-x-2 transition-transform">Fitness & Wellness</h3>
+                            <p class="text-sm text-subtle">Personal Trainers, Gyms, Physiotherapy</p>
                         </div>
                         <div class="w-full h-px bg-gray-200 group-hover:bg-accent transition-colors"></div>
                     </div>
@@ -590,8 +605,8 @@
                     <div class="aisle-card w-[80vw] md:w-[25vw] h-[60vh] bg-white border border-gray-200 p-8 flex flex-col justify-between shrink-0 hover:border-accent transition-colors group">
                         <div class="font-mono text-accent">04</div>
                         <div>
-                            <h3 class="font-display text-4xl mb-2 group-hover:translate-x-2 transition-transform">Engineering</h3>
-                            <p class="text-sm text-subtle">Civil, Software, Mechanical</p>
+                            <h3 class="font-display text-4xl mb-2 group-hover:translate-x-2 transition-transform">Automotive</h3>
+                            <p class="text-sm text-subtle">Car Dealerships, Mechanics, Detailing</p>
                         </div>
                         <div class="w-full h-px bg-gray-200 group-hover:bg-accent transition-colors"></div>
                     </div>
@@ -617,38 +632,38 @@
                         <!-- Vendor Cards -->
                         <div class="vendor-card group relative p-6 border border-gray-200 hover:border-accent transition-all hover:shadow-lg bg-base opacity-0 translate-y-8">
                             <div class="h-12 w-12 bg-gray-200 mb-4 rounded-full group-hover:bg-accent transition-colors"></div>
-                            <h4 class="font-bold text-lg">TechCorp Global</h4>
-                            <p class="text-sm text-subtle mb-4">Hiring: Jr Developers, UX Interns</p>
+                            <h4 class="font-bold text-lg">Mayfair Hair Studio</h4>
+                            <p class="text-sm text-subtle mb-4">Hiring: Hair Stylists, Receptionists</p>
                             <button class="text-xs font-mono uppercase border-b border-graphite pb-1 hover:text-accent hover:border-accent transition-colors">Add to Route +</button>
                         </div>
                         <div class="vendor-card group relative p-6 border border-gray-200 hover:border-accent transition-all hover:shadow-lg bg-base opacity-0 translate-y-8">
                             <div class="h-12 w-12 bg-gray-200 mb-4 rounded-full group-hover:bg-accent transition-colors"></div>
-                            <h4 class="font-bold text-lg">Future Finance</h4>
-                            <p class="text-sm text-subtle mb-4">Hiring: Grad Analysts</p>
+                            <h4 class="font-bold text-lg">The Borough Kitchen</h4>
+                            <p class="text-sm text-subtle mb-4">Hiring: Chefs, Wait Staff</p>
                             <button class="text-xs font-mono uppercase border-b border-graphite pb-1 hover:text-accent hover:border-accent transition-colors">Add to Route +</button>
                         </div>
                         <div class="vendor-card group relative p-6 border border-gray-200 hover:border-accent transition-all hover:shadow-lg bg-base opacity-0 translate-y-8">
                             <div class="h-12 w-12 bg-gray-200 mb-4 rounded-full group-hover:bg-accent transition-colors"></div>
-                            <h4 class="font-bold text-lg">Green Energy UK</h4>
-                            <p class="text-sm text-subtle mb-4">Hiring: Project Managers</p>
+                            <h4 class="font-bold text-lg">Shoreditch Fitness Club</h4>
+                            <p class="text-sm text-subtle mb-4">Hiring: Personal Trainers, Front Desk</p>
                             <button class="text-xs font-mono uppercase border-b border-graphite pb-1 hover:text-accent hover:border-accent transition-colors">Add to Route +</button>
                         </div>
                          <div class="vendor-card group relative p-6 border border-gray-200 hover:border-accent transition-all hover:shadow-lg bg-base opacity-0 translate-y-8">
                             <div class="h-12 w-12 bg-gray-200 mb-4 rounded-full group-hover:bg-accent transition-colors"></div>
-                            <h4 class="font-bold text-lg">Civil Service</h4>
-                            <p class="text-sm text-subtle mb-4">Hiring: Fast Stream</p>
+                            <h4 class="font-bold text-lg">Canary Wharf Events</h4>
+                            <p class="text-sm text-subtle mb-4">Hiring: Event Coordinators</p>
                             <button class="text-xs font-mono uppercase border-b border-graphite pb-1 hover:text-accent hover:border-accent transition-colors">Add to Route +</button>
                         </div>
                          <div class="vendor-card group relative p-6 border border-gray-200 hover:border-accent transition-all hover:shadow-lg bg-base opacity-0 translate-y-8">
                             <div class="h-12 w-12 bg-gray-200 mb-4 rounded-full group-hover:bg-accent transition-colors"></div>
-                            <h4 class="font-bold text-lg">Media House</h4>
-                            <p class="text-sm text-subtle mb-4">Hiring: Production Runners</p>
+                            <h4 class="font-bold text-lg">Camden Beauty Bar</h4>
+                            <p class="text-sm text-subtle mb-4">Hiring: Makeup Artists, Beauty Therapists</p>
                             <button class="text-xs font-mono uppercase border-b border-graphite pb-1 hover:text-accent hover:border-accent transition-colors">Add to Route +</button>
                         </div>
                          <div class="vendor-card group relative p-6 border border-gray-200 hover:border-accent transition-all hover:shadow-lg bg-base opacity-0 translate-y-8">
                             <div class="h-12 w-12 bg-gray-200 mb-4 rounded-full group-hover:bg-accent transition-colors"></div>
-                            <h4 class="font-bold text-lg">Health Trust</h4>
-                            <p class="text-sm text-subtle mb-4">Hiring: Apprentices</p>
+                            <h4 class="font-bold text-lg">Greenwich Motors</h4>
+                            <p class="text-sm text-subtle mb-4">Hiring: Sales Consultants, Mechanics</p>
                             <button class="text-xs font-mono uppercase border-b border-graphite pb-1 hover:text-accent hover:border-accent transition-colors">Add to Route +</button>
                         </div>
                     </div>
@@ -665,7 +680,7 @@
                             <div class="font-mono text-2xl text-accent">01</div>
                             <div class="flex-1">
                                 <h3 class="font-bold text-lg">Create Profile</h3>
-                                <p class="text-sm text-gray-400">Upload CV and define career goals.</p>
+                                <p class="text-sm text-gray-400">Upload your skills and career interests.</p>
                             </div>
                             <i data-lucide="file-text" class="text-gray-500"></i>
                         </div>
@@ -673,7 +688,7 @@
                             <div class="font-mono text-2xl text-accent">02</div>
                             <div class="flex-1">
                                 <h3 class="font-bold text-lg">Build Schedule</h3>
-                                <p class="text-sm text-gray-400">Select workshops and book vendor slots.</p>
+                                <p class="text-sm text-gray-400">Choose workshops and book business visits.</p>
                             </div>
                             <i data-lucide="calendar" class="text-gray-500"></i>
                         </div>
@@ -739,21 +754,21 @@
                         </div>
                         <div class="flex p-4 border-b border-gray-100 items-center hover:bg-base transition-colors group">
                             <div class="w-20 font-mono text-sm text-subtle">10:00</div>
-                            <div class="flex-1 font-medium">Keynote: The Future of Work</div>
+                            <div class="flex-1 font-medium">Opening Speech: Thriving in London's Service Industry</div>
                             <button class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center text-gray-300 group-hover:border-accent group-hover:text-accent transition-all">
                                 <i data-lucide="plus" class="w-4 h-4"></i>
                             </button>
                         </div>
                         <div class="flex p-4 border-b border-gray-100 items-center hover:bg-base transition-colors group">
                             <div class="w-20 font-mono text-sm text-subtle">11:30</div>
-                            <div class="flex-1 font-medium">Networking: Speed Mentoring</div>
+                            <div class="flex-1 font-medium">Networking: Meet Local Business Owners</div>
                             <button class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center text-gray-300 group-hover:border-accent group-hover:text-accent transition-all">
                                 <i data-lucide="plus" class="w-4 h-4"></i>
                             </button>
                         </div>
                          <div class="flex p-4 border-b border-gray-100 items-center hover:bg-base transition-colors group">
                             <div class="w-20 font-mono text-sm text-subtle">13:00</div>
-                            <div class="flex-1 font-medium">Vendor Booth Visits (Allocated)</div>
+                            <div class="flex-1 font-medium">Business Booth Visits (Allocated)</div>
                             <button class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center text-gray-300 group-hover:border-accent group-hover:text-accent transition-all">
                                 <i data-lucide="plus" class="w-4 h-4"></i>
                             </button>
@@ -807,8 +822,8 @@
                             <div class="flex flex-col md:flex-row md:items-center justify-between">
                                 <div>
                                     <span class="text-accent font-mono text-sm">10:00 AM</span>
-                                    <h3 class="text-2xl md:text-3xl font-medium mt-1">Navigating the AI Workplace</h3>
-                                    <p class="text-gray-400 text-sm mt-2">Panel Discussion • Hall A</p>
+                                    <h3 class="text-2xl md:text-3xl font-medium mt-1">Building a Successful Beauty Business in London</h3>
+                                    <p class="text-gray-400 text-sm mt-2">Speech • Main Stage</p>
                                 </div>
                                 <button class="mt-4 md:mt-0 px-4 py-2 border border-white/30 rounded text-xs uppercase hover:bg-white hover:text-graphite transition-colors">Add</button>
                             </div>
@@ -818,8 +833,8 @@
                             <div class="flex flex-comd:flex-row md:items-center justify-between">
                                 <div>
                                     <span class="text-accent font-mono text-sm">12:30 PM</span>
-                                    <h3 class="text-2xl md:text-3xl font-medium mt-1">Green Economy Careers</h3>
-                                    <p class="text-gray-400 text-sm mt-2">Keynote • Main Stage</p>
+                                    <h3 class="text-2xl md:text-3xl font-medium mt-1">Success Stories from London Restaurateurs</h3>
+                                    <p class="text-gray-400 text-sm mt-2">Speech • Main Stage</p>
                                 </div>
                                 <button class="mt-4 md:mt-0 px-4 py-2 border border-white/30 rounded text-xs uppercase hover:bg-white hover:text-graphite transition-colors">Add</button>
                             </div>
@@ -829,7 +844,7 @@
                             <div class="flex flex-col md:flex-row md:items-center justify-between">
                                 <div>
                                     <span cls="text-accent font-mono text-sm">02:00 PM</span>
-                                    <h3 class="text-2xl md:text-3xl font-medium mt-1">Soft Skills Workshop</h3>
+                                    <h3 class="text-2xl md:text-3xl font-medium mt-1">Customer Service Excellence Workshop</h3>
                                     <p class="text-gray-400 text-sm mt-2">Interactive • Lab 1</p>
                                 </div>
                                 <button class="mt-4 md:mt-0 px-4 py-2 border border-white/30 rounded text-xs uppercase hover:bg-white hover:text-graphite transition-colors">Add</button>
@@ -845,7 +860,7 @@
                 <div class="bg-base p-12 flex flex-col justify-center border-b md:border-b-0 md:border-r border-gray-200 hover:bg-white transition-colors group relative overflow-hidden" id="register">
                     <div class="absolute inset-0 bg-accent/5 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                     <div class="relative z-10">
-                        <span class="font-mono text-xs uppercase text-subtle mb-4 block">For Talent</span>
+                        <span class="font-mono text-xs uppercase text-subtle mb-4 block">For Job Seekers</span>
                         <h2 class="font-display text-4xl mb-6">Attend</h2>
                         <ul class="space-y-2 mb-8 text-sm text-gray-600">
                             <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-accent"></i> Free Entry</li>
@@ -860,7 +875,7 @@
                 <div class="bg-white p-12 flex flex-col justify-center border-b md:border-b-0 md:border-r border-gray-200 hover:bg-base transition-colors group relative overflow-hidden" id="exhibit">
                      <div class="absolute inset-0 bg-graphite/5 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                      <div class="relative z-10">
-                        <span class="font-mono text-xs uppercase text-subtle mb-4 block">For Employers</span>
+                        <span class="font-mono text-xs uppercase text-subtle mb-4 block">For Business Owners</span>
                         <h2 class="font-display text-4xl mb-6">Exhibit</h2>
                         <ul class="space-y-2 mb-8 text-sm text-gray-600">
                             <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-graphite"></i> Custom Booth</li>
@@ -875,7 +890,7 @@
                 <div class="bg-graphite text-white p-12 flex flex-col justify-center group relative overflow-hidden">
                      <div class="absolute inset-0 bg-white/5 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                      <div class="relative z-10">
-                        <span class="font-mono text-xs uppercase text-gray-400 mb-4 block">For Educators</span>
+                        <span class="font-mono text-xs uppercase text-gray-400 mb-4 block">For Training Providers</span>
                         <h2 class="font-display text-4xl mb-6">Partner</h2>
                         <p class="text-sm text-gray-400 mb-8 leading-relaxed">Join as an educational partner to provide workshops, accreditation, and learning pathways.</p>
                         <button class="w-full py-4 bg-transparent border border-white text-white font-mono uppercase tracking-widest hover:bg-white hover:text-graphite transition-colors">Enquire</button>
@@ -1045,23 +1060,26 @@
             }
 
             // --- LOGO COLOR ADAPTATION FUNCTION ---
-            // Change logo i dots color based on background (white on dark, black on light)
+            // Change logo i dots and text color based on background (white on dark, black on light)
             function updateLogoColor() {
-                const logo = document.querySelector('.logo-adaptive');
+                const logoSvg = document.querySelector('.logo-svg');
+                const logoText = document.querySelector('.logo-text');
                 const staticHero = document.getElementById('static-hero');
 
-                if (!logo) return;
+                if (!logoSvg || !logoText) return;
 
                 // Check if static hero exists and is visible
                 if (staticHero && staticHero.style.display !== 'none') {
                     const heroRect = staticHero.getBoundingClientRect();
-                    const logoRect = logo.getBoundingClientRect();
+                    const logoRect = logoSvg.getBoundingClientRect();
 
                     // If logo is over the dark hero section, add on-dark class
                     if (heroRect.top < logoRect.bottom && heroRect.bottom > logoRect.top) {
-                        logo.classList.add('on-dark');
+                        logoSvg.classList.add('on-dark');
+                        logoText.classList.add('on-dark');
                     } else {
-                        logo.classList.remove('on-dark');
+                        logoSvg.classList.remove('on-dark');
+                        logoText.classList.remove('on-dark');
                     }
                 }
             }
