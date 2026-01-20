@@ -121,26 +121,28 @@
         }
 
         /* Horizontal scroll section - touch optimization */
-        #mod-05 {
-            touch-action: pan-y; /* Only allow vertical touch gestures */
-        }
-
         .aisle-wrapper {
             will-change: transform; /* GPU acceleration hint */
         }
 
-        /* Only disable touch on desktop where GSAP ScrollTrigger handles horizontal scroll */
+        /* Desktop: Only allow vertical page scroll, horizontal handled by GSAP */
         @media (min-width: 768px) {
+            #mod-05 {
+                touch-action: pan-y;
+            }
+
             .aisle-wrapper {
                 touch-action: none;
             }
         }
 
-        /* On mobile, enable native horizontal scrolling */
+        /* Mobile: Enable native horizontal scrolling */
         @media (max-width: 767px) {
             #mod-05 {
                 overflow-x: auto !important; /* Override overflow-hidden */
                 overflow-y: visible !important;
+                touch-action: pan-x pan-y !important; /* Allow both horizontal and vertical scroll */
+                -webkit-overflow-scrolling: touch;
             }
 
             .aisle-wrapper {
